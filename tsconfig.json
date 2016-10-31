@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"lib": [
+			"dom",
+			"es2015",
+			"es6"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"declaration": true,
+		"emitDecoratorMetadata": true,
+		"jsx": "react",
+		"experimentalDecorators": true,
+		"preserveConstEnums": true,
+		"allowSyntheticDefaultImports": true,
+		"sourceMap": true,
+		"pretty": true,
+		"outDir": "./dist",
+		"paths": {
+			"*": [
+				"*"
+			]
+		},
+		"baseUrl": "./src"
+	},
+	"exclude": [
+		"dist",
+		"node_modules"
+		
+	]
+	
+}

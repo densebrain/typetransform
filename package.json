@@ -1,0 +1,39 @@
+{
+  "name": "typetransform",
+  "version": "0.0.1",
+  "description": "Typed Object Filtering & Hydration",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/densebrain/typefilter.git"
+  },
+  "keywords": [
+    "typescript",
+    "filter",
+    "object",
+    "map"
+  ],
+  "author": "Jonathan Glanz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/densebrain/typefilter/issues"
+  },
+  "homepage": "https://github.com/densebrain/typefilter#readme",
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "lodash": "^4.16.5"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.37",
+    "typescript": "^2.1.0-dev.20161031"
+  }
+}
