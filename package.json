@@ -12,9 +12,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
+  "repository": {;s
     "type": "git",
-    "url": "git+https://github.com/densebrain/typefilter.git"
+    "url": "git+https://github.com/densebrain/typetransform.git"
+  },
+  "jest": {
+    "verbose": true,
+    "scriptPreprocessor": "./node_modules/ts-jest/preprocessor.js",
+    "testRegex": "src\\/test.*\\.spec\\.(ts|tsx)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
   },
   "keywords": [
     "typescript",
@@ -25,15 +35,20 @@
   "author": "Jonathan Glanz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/densebrain/typefilter/issues"
+    "url": "https://github.com/densebrain/typetransform/issues"
   },
-  "homepage": "https://github.com/densebrain/typefilter#readme",
+  "homepage": "https://github.com/densebrain/typetransform#readme",
   "dependencies": {
     "immutable": "^3.8.1",
-    "lodash": "^4.16.5"
+    "lodash": "^4.16.5",
+    "typeguard": "0.0.2"
   },
   "devDependencies": {
+    "@types/jest": "^15.1.32",
     "@types/lodash": "^4.14.37",
+    "jest": "^16.0.2",
+    "source-map-support": "^0.4.6",
+    "ts-jest": "^0.1.11",
     "typescript": "^2.1.0-dev.20161031"
   }
 }

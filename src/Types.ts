@@ -5,17 +5,20 @@ export enum FilterType {
 }
 
 
+export type TKeyPath = Array<string|number>
+
 /**
  * Filter test fn
  */
-export type TFilterTestFn = (key:string,value:any) => boolean
+export type TFilterTestFn = (keyPath:TKeyPath,value:any) => boolean
 
+export type TFilterTest = string|TKeyPath|RegExp|TFilterTestFn
 /**
  * A filter
  */
 export interface IFilter {
 	type:FilterType
-	test:string|string[]|RegExp|TFilterTestFn
+	test:TFilterTest
 	 
 }
 
@@ -35,4 +38,45 @@ export interface IFilterConfig {
 }
 
 
+export type TFilterCurriedFn = (keyPath:TKeyPath,value:any) => boolean
 
+
+/**
+ * Actual converter
+ */
+export type TTypeConverter = (value?:any,keyPath?:TKeyPath,filter?:TFilterCurriedFn) => any
+
+/**
+ * Get type converter returns either
+ *
+ * false - not supported
+ * converter - supported
+ */
+export interface ICanConvert {
+	(value:any,jsType?:string): boolean
+}
+
+/**
+ * Actual converter
+ */
+export type TConverter = {test:ICanConvert,convert:TTypeConverter}
+
+
+export interface IHydrateTest {
+	(type:string,value?:any):boolean
+}
+
+export interface IHydrate {
+	(type:string,value:any):any
+}
+
+export interface IHydrater {
+	test:IHydrateTest
+	hydrate:IHydrate
+}
+
+
+export const DefaultFilterConfig = {
+	defaultExcluded: false,
+	filters: []
+}

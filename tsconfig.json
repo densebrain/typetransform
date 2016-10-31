@@ -17,13 +17,9 @@
 		"sourceMap": true,
 		"pretty": true,
 		"outDir": "./dist",
-		"paths": {
-			"*": [
-				"*"
-			]
-		},
 		"baseUrl": "./src"
 	},
+	"compileOnSave": true,
 	"exclude": [
 		"dist",
 		"node_modules"
