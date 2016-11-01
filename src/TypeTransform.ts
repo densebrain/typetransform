@@ -9,7 +9,7 @@ import {
 	TTypeConverter, TKeyPath, IHydrater
 } from "./Types"
 import { isString, isFunction, isNumber, isNil, isList, isMap, isObject } from "typeguard"
-import { Map, List } from 'immutable'
+import { Map, Record,List } from 'immutable'
 import isBoolean = require("lodash/isBoolean")
 import isDate = require("lodash/isDate")
 import isNull = require("lodash/isNull")
@@ -59,7 +59,9 @@ function transformMap(value:Map<any,any>) {
 }
 
 addConverters(
-	{test:isMap,convert:transformMap},
+	{test:(val:any) => {
+		return isMap(val) || val instanceof Record
+	},convert:transformMap},
 	{test:isList,convert:transformList}
 )
 
@@ -243,7 +245,7 @@ function keyPathToPlainObject(value:any, keyPath:TKeyPath, filter:TFilterCurried
  * @param obj
  * @param filterConfig
  */
-export function toPlainObject(obj:any, filterConfig:IFilterConfig = null) {
+export function toPlainObject(obj:any, filterConfig:IFilterConfig = null):any {
 	let
 		filter = makeFilter(filterConfig || DefaultFilterConfig),
 		keyPath = []

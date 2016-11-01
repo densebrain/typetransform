@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="./node_modules/.bin/jest" working-dir="$PROJECT_DIR$">
+  <configuration default="false" name="Test" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="./node_modules/.bin/jest" application-parameters="--runInBand" working-dir="$PROJECT_DIR$">
     <profiling v8-profiler-path="" />
     <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
       <profiling v8-profiler-path="" />
