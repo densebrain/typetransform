@@ -14,7 +14,7 @@
 		"experimentalDecorators": true,
 		"preserveConstEnums": true,
 		"allowSyntheticDefaultImports": true,
-		"sourceMap": true,
+		"inlineSourceMap": true,
 		"pretty": true,
 		"outDir": "./dist",
 		"baseUrl": "./src"
