@@ -10,7 +10,8 @@
     "README.md"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "publish": "git commit -a -m \"publishing\" && git push && npm version patch && npm publish && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,9 @@
     "url": "https://github.com/densebrain/typetransform/issues"
   },
   "homepage": "https://github.com/densebrain/typetransform#readme",
+  "peerDependencies": {
+    "immutable": "^3.8.1"
+  },
   "dependencies": {
     "immutable": "^3.8.1",
     "lodash": "^4.16.5",

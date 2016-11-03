@@ -15,7 +15,7 @@ import isDate = require("lodash/isDate")
 import isNull = require("lodash/isNull")
 import isError = require("lodash/isError")
 import transform = require('lodash/transform')
-import { hasOwnProp } from "Util"
+import { hasOwnProp } from "./Util"
 
 const
 	NoConvertFn = (value:any) => value,
