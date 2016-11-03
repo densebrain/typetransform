@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "publish": "git commit -a -m \"publishing\" && git push && npm version patch && npm publish && git push --tags"
+    "publish": "git commit -a -m \"publishing\" && git push && npm version patch && npm publish && git push && git push --tags"
   },
   "repository": {
     "type": "git",
