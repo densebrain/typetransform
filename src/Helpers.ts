@@ -14,3 +14,4 @@ export function excludeFilter(...tests:TFilterTest[]):IFilter[] {
 		test
 	}))
 }
+

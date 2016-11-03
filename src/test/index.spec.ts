@@ -143,6 +143,15 @@ test(`exclude filter`,() => {
 	expect(isMap(hydratedModel)).toBeTruthy()
 })
 
+test(`nested maps`,() => {
+	const
+		map = Map({
+			subMap: Map({
+				myVal: '123'
+			})
+		})
+})
+
 // log(`Original = `,Fixture)
 //
 //

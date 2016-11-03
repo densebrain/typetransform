@@ -15,6 +15,7 @@ import isDate = require("lodash/isDate")
 import isNull = require("lodash/isNull")
 import isError = require("lodash/isError")
 import transform = require('lodash/transform')
+import { hasOwnProp } from "Util"
 
 const
 	NoConvertFn = (value:any) => value,
@@ -169,7 +170,7 @@ export function makeFilter(filterConfig:IFilterConfig):TFilterCurriedFn {
  * @returns {any}
  */
 export function isTransformed(val:any) {
-	return val && isObject(val) && ['$$type','$$value'].every(it => val.hasOwnProperty(it))
+	return val && isObject(val) && ['$$type','$$value'].every(it => hasOwnProp(val,it))
 }
 
 
