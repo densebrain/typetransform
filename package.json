@@ -1,6 +1,6 @@
 {
   "name": "typetransform",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Typed Object Filtering & Hydration",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
