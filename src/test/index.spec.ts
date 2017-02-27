@@ -1,10 +1,12 @@
 import { Map, List, Record } from 'immutable'
 import * as Immutable from 'immutable'
 import _ = require('lodash')
-import { toPlainObject, fromPlainObject, isTransformed } from "../TypeTransform"
+import { addHydrater,addConverter,addTransformableClass,toPlainObject, fromPlainObject, isTransformed } from "../TypeTransform"
 import { FilterType } from "../Types"
 import { isNil, isMap } from "typeguard"
 import { excludeFilterConfig, excludeFilter } from "../Helpers"
+import { SimpleConverter } from "../SimpleConverter"
+import { SimpleHydrater } from "../SimpleHydrator"
 
 let
 	Map1 = Map({
@@ -109,7 +111,7 @@ class TestModel extends TestRecord {
 	toJS() {
 		const
 			filterConfig = excludeFilterConfig(...excludeFilter('authTrans'))
-		console.log(filterConfig)
+		//console.log(filterConfig)
 		return toPlainObject(this,filterConfig)
 	}
 	
@@ -118,18 +120,19 @@ class TestModel extends TestRecord {
 	myList:List<number>
 }
 
+const
+	model = new TestModel({auth:true,authTrans:true})
+
 
 test(`exclude filter`,() => {
-	const
-		model = new TestModel({auth:true,authTrans:true})
 	
 	expect(model.authTrans).toBeTruthy()
 	expect(model.auth).toBeTruthy()
 	
-	const
+	let
 		po = model.toJS()
 	
-	console.log(po)
+	//console.log(po)
 	expect(isNil(po.$$value.authTrans)).toBeTruthy()
 	expect(po.$$value.auth).toBeTruthy()
 	
@@ -137,10 +140,36 @@ test(`exclude filter`,() => {
 		inflatedMap = fromPlainObject(po),
 		hydratedModel = new TestModel(inflatedMap)
 	
-	console.log(`Inflated`,inflatedMap,'record',hydratedModel)
+	//console.log(`Inflated`,inflatedMap,'record',hydratedModel)
 	expect(hydratedModel.authTrans).toBeFalsy()
 	expect(hydratedModel.auth).toBeTruthy()
 	expect(isMap(hydratedModel)).toBeTruthy()
+	
+	
+})
+
+test(`custom converter & hydrator`,() => {
+	
+	const
+		converter = new SimpleConverter(TestModel),
+		hydrator = new SimpleHydrater(TestModel)
+
+	addConverter(converter)
+	addHydrater(hydrator)
+	//addTransformableClass(TestModel)
+	
+	const
+		po = toPlainObject(model)
+	
+	expect(po.$$type).toBe("TestModel")
+	expect(po.$$value.auth).toBeTruthy()
+	
+	const
+		hydrated = fromPlainObject(po)
+	
+	expect(hydrated instanceof TestModel).toBeTruthy()
+	expect(hydrated.auth).toBeTruthy()
+	expect(hydrated.myList.size).toBe(5)
 })
 
 test(`nested maps`,() => {

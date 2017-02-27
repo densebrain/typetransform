@@ -44,7 +44,9 @@ export type TFilterCurriedFn = (keyPath:TKeyPath,value:any) => boolean
 /**
  * Actual converter
  */
-export type TTypeConverter = (value?:any,keyPath?:TKeyPath,filter?:TFilterCurriedFn) => any
+export interface ITypeConverter {
+	(value?:any, keyPath?:TKeyPath, filter?:TFilterCurriedFn): any
+}
 
 /**
  * Get type converter returns either
@@ -59,7 +61,10 @@ export interface ICanConvert {
 /**
  * Actual converter
  */
-export type TConverter = {test:ICanConvert,convert:TTypeConverter}
+export interface IConverter {
+	test:ICanConvert,
+	convert:ITypeConverter
+}
 
 
 export interface IHydrateTest {

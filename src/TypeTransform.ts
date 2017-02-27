@@ -5,8 +5,8 @@
 
 
 import {
-	DefaultFilterConfig, TConverter, TFilterCurriedFn, FilterType, TFilterTest, IFilterConfig, ICanConvert,
-	TTypeConverter, TKeyPath, IHydrater
+	DefaultFilterConfig, IConverter, TFilterCurriedFn, FilterType, TFilterTest, IFilterConfig, ICanConvert,
+	ITypeConverter, TKeyPath, IHydrater
 } from "./Types"
 import { isString, isFunction, isNumber, isNil, isList, isMap, isObject } from "typeguard"
 import { Map, Record,List } from 'immutable'
@@ -15,13 +15,16 @@ import isDate = require("lodash/isDate")
 import isNull = require("lodash/isNull")
 import isError = require("lodash/isError")
 import transform = require('lodash/transform')
-import { hasOwnProp } from "./TypeTransformUtils"
+import { hasOwnProp, makeTransformedObject } from "./TypeTransformUtils"
 
 const
 	NoConvertFn = (value:any) => value,
 	ExcludeConvertFn = (value:any) => undefined,
+	TransformableClasses = List<any>().asMutable(),
+	
 	Primitives = [isNumber,isString,isBoolean,isDate,isNil,isError],
-	Converters = List<TConverter>()
+	
+	Converters = List<IConverter>()
 		.asMutable(),
 	Hydraters = List<IHydrater>()
 		.asMutable()
@@ -33,12 +36,13 @@ Primitives.forEach(test => Converters.push({test,convert:NoConvertFn}))
 // FUNCTIONS ARE EXCLUDED
 Converters.push({test: isFunction,convert:ExcludeConvertFn})
 
-// MAKE TRANSFORMED OBJECT
-function makeTransformedObject(type,value:any) {
-	return {
-		$$type: type,
-		$$value: value
-	}
+
+export function addTransformableClass(clazz:any) {
+	TransformableClasses.push(clazz)
+}
+
+function isTransformableClass(o:any) {
+	return TransformableClasses.some(clazz => o instanceof clazz)
 }
 
 /**
@@ -46,7 +50,7 @@ function makeTransformedObject(type,value:any) {
  *
  * @param newConverters
  */
-export function addConverters(...newConverters:TConverter[]) {
+export function addConverter(...newConverters:IConverter[]) {
 	Converters.unshift(...newConverters)
 }
 
@@ -59,7 +63,7 @@ function transformMap(value:Map<any,any>) {
 	return makeTransformedObject(Map.name,value.toObject())
 }
 
-addConverters(
+addConverter(
 	{test:(val:any) => {
 		return isMap(val) || val instanceof Record
 	},convert:transformMap},
@@ -183,11 +187,11 @@ export function isTransformed(val:any) {
  * @returns {any}
  */
 function keyPathToPlainObject(value:any, keyPath:TKeyPath, filter:TFilterCurriedFn) {
+	
 	let
 		converter = Converters.find(it => it.test(value)),
 		nextValue
 	
-	// IF CONVERTER THEN DO IT
 	nextValue = !converter ? value : converter.convert(value,keyPath,filter)
 	
 	if (nextValue) {
@@ -247,12 +251,32 @@ function keyPathToPlainObject(value:any, keyPath:TKeyPath, filter:TFilterCurried
  * @param filterConfig
  */
 export function toPlainObject(obj:any, filterConfig:IFilterConfig = null):any {
+	// IF CONVERTER THEN DO IT
+	let
+		transformObj = obj,
+		isTransformable = isTransformableClass(obj)
+	//
+	// if (isTransformable) {
+	// 	transformObj = Object.assign({},obj)
+	// }
+	
 	let
 		filter = makeFilter(filterConfig || DefaultFilterConfig),
 		keyPath = []
 		
 	// Traverse and filter
-	return keyPathToPlainObject(obj,keyPath,filter)
+	let
+		po = keyPathToPlainObject(transformObj,keyPath,filter)
+	
+	if (isTransformable) {
+		const
+			clazz = TransformableClasses.find(clazz => obj instanceof clazz),
+			{name}= clazz
+		
+		po = makeTransformedObject(name,po)
+	}
+	
+	return po
 }
 
 function hydrateValue(value:any) {
