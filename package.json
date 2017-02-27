@@ -15,7 +15,7 @@
     "compile:watch": "tsc --project tsconfig.json --watch",
     "test": "jest",
     "test:watch": "jest --watch",
-    "release": "git commit -a -m \"publishing\" && git push && npm version patch && npm publish && git push --all && git push --tags"
+    "release": "git commit -a -m \"publishing\"; git push && npm version patch && npm publish && git push --all && git push --tags"
   },
   "repository": {
     "type": "git",
